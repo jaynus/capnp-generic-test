@@ -71,6 +71,40 @@ where
     }
 }
 
+struct WorkerImplThree<S, T> {
+    a: S,
+    _marker: std::marker::PhantomData<T>,
+}
+impl<S, T> WorkerImplThree<S, T>
+where
+    S: Clone + capnp::capability::Server,
+    T: for<'a> capnp::traits::Owned<'a>,
+{
+    fn default() -> Self {
+        Self {
+            a: AImpl::default(),
+            _marker: Default::default(),
+        }
+    }
+}
+impl<S, T> worker::Server<T> for WorkerImplThree<S, T>
+where
+    S: Clone + capnp::capability::Server,
+    T: for<'a> capnp::traits::Owned<'a>,
+{
+    fn get_interface(
+        &mut self,
+        params: worker::GetInterfaceParams<T>,
+        mut results: worker::GetInterfaceResults<T>,
+    ) -> Promise<(), ::capnp::Error> {
+        results
+            .get()
+            .set_interface(capnp_rpc::new_client(self.a.clone()));
+
+        Promise::ok(())
+    }
+}
+
 #[derive(Default)]
 struct WorkerImplWorking {
     a: AImpl,
