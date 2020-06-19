@@ -1,0 +1,15 @@
+[package]
+name = "capnp-generic-test"
+version = "0.1.0"
+authors = ["Walter Pearce <jaynus@gmail.com>"]
+edition = "2018"
+
+[build-dependencies]
+capnpc = { git = "https://github.com/capnproto/capnproto-rust" }
+
+[dependencies]
+capnp = { git = "https://github.com/capnproto/capnproto-rust" }
+capnp-rpc = { git = "https://github.com/capnproto/capnproto-rust" }
+futures = "0.3.0"
+smol = "0.1"
+
